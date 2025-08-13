@@ -113,3 +113,32 @@ workflows:
       - *initializeSubmodules
       - *bundleInstall
       - *buildAndTest
+
+  ios-linux-x2:
+    name: iOS Linux_x2
+    instance_type: linux_x2
+    environment:
+      <<: *env_versions
+    triggering:
+      <<: *push_event
+    scripts:
+      - bundle update --bundler
+      - *initializeSubmodules
+      - *bundleInstall
+      - *buildAndTest
+
+  ios-linux_x4:
+    name: iOS Linux x4 Workflow
+    instance_type: linux_x4
+    environment:
+      <<: *env_versions
+    triggering:
+      <<: *push_event
+    machine:
+      type: linux
+      cpu: 4
+    scripts:
+      - bundle update --bundler
+      - *initializeSubmodules
+      - *bundleInstall
+      - *buildAndTest
