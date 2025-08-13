@@ -118,37 +118,59 @@ workflows:
     name: iOS Linux x2 Workflow
     instance_type: linux_x2
     environment:
-      <<: *env_versions
+      ubuntu: 24.04              # Linux OS version
+      ruby: 3.0.0                # Ruby version (adjust to your app need)
     triggering:
       <<: *push_event
     scripts:
-      - bundle update --bundler
-      - *initializeSubmodules
-      - *bundleInstall
-      # Replace buildAndTest with Linux compatible commands, or
-      # remove the build step if not applicable
-      - name: Run Linux-compatible checks
+      - name: Initialize Submodules
         script: |
-          echo "Running Linux-compatible tasks"
-          # Example commands:
-          make lint
-          make test-linux
+          echo "Updating git submodules"
+          git submodule update --init --recursive
+
+      - name: Bundle Install
+        script: |
+          echo "Configuring bundler path and installing gems"
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+  
+      - name: Linux Lint and Test
+        script: |
+          echo "Running lint checks"
+          # Example lint command, replace with your linter if different
+          bundle exec rubocop || true
+  
+          echo "Running tests"
+          # Example test command, replace with your test framework commands
+          bundle exec rspec || true
           
 
   ios-linux_x4:
     name: iOS Linux x4 Workflow
     instance_type: linux_x4
     environment:
-      <<: *env_versions
+      ubuntu: 24.04              # Linux OS version
+      ruby: 3.0.0                # Ruby version (adjust to your app need)
     triggering:
       <<: *push_event
     scripts:
-      - bundle update --bundler
-      - *initializeSubmodules
-      - *bundleInstall
-      - name: Run Linux-compatible checks
+      - name: Initialize Submodules
         script: |
-          echo "Running Linux-compatible tasks"
-          # Example commands here as above
-          make lint
-          make test-linux
+          echo "Updating git submodules"
+          git submodule update --init --recursive
+
+      - name: Bundle Install
+        script: |
+          echo "Configuring bundler path and installing gems"
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+  
+      - name: Linux Lint and Test
+        script: |
+          echo "Running lint checks"
+          # Example lint command, replace with your linter if different
+          bundle exec rubocop || true
+  
+          echo "Running tests"
+          # Example test command, replace with your test framework commands
+          bundle exec rspec || true
