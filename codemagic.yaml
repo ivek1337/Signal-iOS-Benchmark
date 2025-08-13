@@ -134,9 +134,6 @@ workflows:
       <<: *env_versions
     triggering:
       <<: *push_event
-    machine:
-      type: linux
-      cpu: 4
     scripts:
       - bundle update --bundler
       - *initializeSubmodules
