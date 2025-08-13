@@ -114,8 +114,8 @@ workflows:
       - *bundleInstall
       - *buildAndTest
 
-  ios-linux-x2:
-    name: iOS Linux_x2
+  ios-linux_x2:
+    name: iOS Linux x2 Workflow
     instance_type: linux_x2
     environment:
       <<: *env_versions
@@ -125,7 +125,15 @@ workflows:
       - bundle update --bundler
       - *initializeSubmodules
       - *bundleInstall
-      - *buildAndTest
+      # Replace buildAndTest with Linux compatible commands, or
+      # remove the build step if not applicable
+      - name: Run Linux-compatible checks
+        script: |
+          echo "Running Linux-compatible tasks"
+          # Example commands:
+          make lint
+          make test-linux
+          
 
   ios-linux_x4:
     name: iOS Linux x4 Workflow
@@ -138,4 +146,9 @@ workflows:
       - bundle update --bundler
       - *initializeSubmodules
       - *bundleInstall
-      - *buildAndTest
+      - name: Run Linux-compatible checks
+        script: |
+          echo "Running Linux-compatible tasks"
+          # Example commands here as above
+          make lint
+          make test-linux
